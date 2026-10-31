@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>태양광 수익 계산기</title>
+<style>
+  /* 색상 설정 */
+  :root {
+    --main: #16233E;   /* 남색 (기본색) */
+    --accent: #c2532f; /* 주황 (강조색) */
+    --bg: #f4f6fb;
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: "Malgun Gothic", "맑은 고딕", sans-serif; background: var(--bg); color: #1c2535; }
+  header { background: var(--main); color: #fff; padding: 24px 16px; border-bottom: 5px solid var(--accent); }
+  header h1 { margin: 0; font-size: 24px; }
+  header p { margin: 4px 0 0; color: #c9d4ea; font-size: 14px; }
+  main { max-width: 640px; margin: 24px auto; padding: 0 16px; }
+  .box { background: #fff; border: 1px solid #e4e8f0; border-radius: 12px; padding: 20px; margin-bottom: 16px; }
+  label { display: block; font-weight: bold; font-size: 14px; margin: 12px 0 4px; }
+  input { width: 100%; padding: 10px; font-size: 16px; border: 1px solid #cdd4e0; border-radius: 8px; }
+  button { margin-top: 16px; width: 100%; padding: 12px; font-size: 16px; font-weight: bold; color: #fff; background: var(--accent); border: 0; border-radius: 8px; cursor: pointer; }
+  .result { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .result div { background: var(--bg); border-radius: 10px; padding: 12px; text-align: center; }
+  .result small { display: block; color: #5e6b82; font-size: 12px; }
+  .result b { font-size: 18px; color: var(--accent); }
+  @media (max-width: 520px) { .result { grid-template-columns: 1fr; } }
+  footer { text-align: center; color: #9aa4b6; font-size: 12px; margin: 24px 0; }
+</style>
+</head>
+<body>
+<header>
+  <!-- 👉 [10회차 자동 반영 실습] 아래 안내 문구를 바꾸고 푸시해 보세요 -->
+  <h1>태양광 수익 계산기</h1>
+  <p>설치 용량만 넣으면 연간 발전량과 수익을 계산해요</p>
+</header>
+
+<main>
+  <div class="box">
+    <label for="kw">설치 용량 (kW)</label>
+    <input id="kw" type="number" value="100">
+
+    <label for="hours">하루 평균 발전시간 (시간)</label>
+    <input id="hours" type="number" value="3.6" step="0.1">
+
+    <label for="price">판매 단가 (원/kWh)</label>
+    <input id="price" type="number" value="150">
+
+    <label for="cost">총 설치비 (만원)</label>
+    <input id="cost" type="number" value="12000">
+
+    <button onclick="calc()">계산하기</button>
+  </div>
+
+  <div class="box result">
+    <div><small>연간 발전량</small><b id="r1">-</b></div>
+    <div><small>연간 수익</small><b id="r2">-</b></div>
+    <div><small>투자 회수기간</small><b id="r3">-</b></div>
+  </div>
+</main>
+
+<footer><!-- 👉 [10회차] 배포 후 v1 → v2 로 바꿔 푸시하면 자동 반영! -->v1 · GRANDSUN AI ACADEMY 실습용 · 계산값은 단순 추정치입니다</footer>
+
+<script>
+  function calc() {
+    var kw = Number(document.getElementById('kw').value);
+    var hours = Number(document.getElementById('hours').value);
+    var price = Number(document.getElementById('price').value);
+    var cost = Number(document.getElementById('cost').value);
+
+    var kwhPerYear = kw * hours * 365;           // 연간 발전량 (kWh)
+    var incomePerYear = kwhPerYear * price;      // 연간 수익 (원)
+    var payback = (cost * 10000) / incomePerYear; // 회수기간 (년)
+
+    document.getElementById('r1').textContent = Math.round(kwhPerYear).toLocaleString() + ' kWh';
+    document.getElementById('r2').textContent = Math.round(incomePerYear / 10000).toLocaleString() + ' 만원';
+    document.getElementById('r3').textContent = payback.toFixed(1) + ' 년';
+  }
+  calc();
+</script>
+</body>
+</html>
